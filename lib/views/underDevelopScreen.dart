@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nebengdong/core/bloc/userBloc/bloc.dart';
+import 'package:nebengdong/core/services/userService.dart';
+import 'package:nebengdong/views/profile/profileScreen.dart';
 
 class UnderDevelopScreen extends StatefulWidget {
   final String role;
@@ -59,6 +63,19 @@ class _UnderDevelopScreenState extends State<UnderDevelopScreen> {
                               ),
                             ))
                         : Text("Cari Driver")),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BlocProvider(
+                                create: (context) => UserBloc(UserService()),
+                                child: ProfileScreen(),
+                              )),
+                    );
+                  },
+                  child: Text("Profile"),
+                )
               ],
             ),
           )

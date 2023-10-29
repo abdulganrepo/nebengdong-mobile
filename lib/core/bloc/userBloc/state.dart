@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:nebengdong/core/models/responseNoDataModel.dart';
 import 'package:nebengdong/core/models/userModel.dart';
 
 class UserState extends Equatable {
@@ -21,3 +22,23 @@ class GetUserProfileSuccess extends UserState {
 }
 
 class GetUserProfileFailed extends UserState {}
+
+class ChangePhoneNumberSuccess extends UserState {
+  final ResponseNoDataModel value;
+  ChangePhoneNumberSuccess(this.value);
+
+  @override
+  List<Object> get props => [value];
+}
+
+class ChangePhoneNumberFailed extends UserState {}
+
+class ChangePasswordSuccess extends UserState {
+  final ResponseNoDataModel value;
+  ChangePasswordSuccess(this.value);
+
+  @override
+  List<Object> get props => [value];
+}
+
+class ChangePasswordFailed extends UserState {}

@@ -12,3 +12,20 @@ class GetUserProfileEvent extends UserEvent {
   // TODO: implement props
   List<Object> get props => [];
 }
+
+class ChangePhoneNumberEvent extends UserEvent {
+  final String phoneNumber;
+  ChangePhoneNumberEvent(this.phoneNumber);
+
+  @override
+  List<Object> get props => [phoneNumber];
+}
+
+class ChangePasswordEvent extends UserEvent {
+  final String oldPass;
+  final String newPass;
+  ChangePasswordEvent(this.oldPass, this.newPass);
+
+  @override
+  List<Object> get props => [oldPass, newPass];
+}
