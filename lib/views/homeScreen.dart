@@ -5,7 +5,9 @@ import 'package:nebengdong/core/bloc/userBloc/bloc.dart';
 import 'package:nebengdong/core/bloc/userBloc/event.dart';
 import 'package:nebengdong/core/bloc/userBloc/state.dart';
 import 'package:nebengdong/utils/loader.dart';
+import 'package:nebengdong/views/driver/driverScreen.dart';
 import 'package:nebengdong/views/mainScreen.dart';
+import 'package:nebengdong/views/passenger/passengerScreen.dart';
 import 'package:nebengdong/views/underDevelopScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -68,9 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => UnderDevelopScreen(
-                                          role: "Driver",
-                                        )));
+                                    builder: (context) => DriverScreen()));
                           } else {
                             final snackBar = SnackBar(
                               content: const Text(
@@ -107,9 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => UnderDevelopScreen(
-                                        role: "Nebeng",
-                                      )));
+                                  builder: (context) => PassengerScreen()));
                         },
                         child: Container(
                           height: 300,

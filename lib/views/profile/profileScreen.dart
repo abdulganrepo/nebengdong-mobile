@@ -25,6 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? phoneNumber;
   String? userName;
   String? motor;
+  String? koin;
 
   @override
   void initState() {
@@ -58,6 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 email = state.value.data!.email!;
                 phoneNumber = state.value.data!.phoneNumber!;
                 userName = state.value.data!.name!;
+                koin = state.value.data!.coin.toString();
               });
             }
           },
@@ -121,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     text: "Saldo Kamu : ",
                                     style: TextStyle(color: Colors.black)),
                                 TextSpan(
-                                    text: "Rp 40.000",
+                                    text: "Rp ${koin ?? "-"}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black))
