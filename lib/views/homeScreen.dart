@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nebengdong/core/bloc/driverBloc/bloc.dart';
+import 'package:nebengdong/core/bloc/passengerBloc/bloc.dart';
 import 'package:nebengdong/core/bloc/userBloc/bloc.dart';
 import 'package:nebengdong/core/bloc/userBloc/event.dart';
 import 'package:nebengdong/core/bloc/userBloc/state.dart';
+import 'package:nebengdong/core/services/driverService.dart';
+import 'package:nebengdong/core/services/passengerService.dart';
 import 'package:nebengdong/utils/loader.dart';
 import 'package:nebengdong/views/driver/driverScreen.dart';
 import 'package:nebengdong/views/mainScreen.dart';
@@ -20,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var isDriver = false;
 
+  @override
   void initState() {
     final homeBloc = BlocProvider.of<UserBloc>(context);
     homeBloc.add(GetUserProfileEvent());
@@ -70,7 +75,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DriverScreen()));
+                                    builder: (context) => BlocProvider(
+                                          create: (context) =>
+                                              DriverBloc(DriverService()),
+                                          child: DriverScreen(),
+                                        )));
                           } else {
                             final snackBar = SnackBar(
                               content: const Text(
@@ -107,7 +116,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => PassengerScreen()));
+                                  builder: (context) => BlocProvider(
+                                        create: (context) =>
+                                            PassengerBloc(PassengerService()),
+                                        child: PassengerScreen(),
+                                      )));
                         },
                         child: Container(
                           height: 300,

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nebengdong/config/urls.dart';
+import 'package:nebengdong/core/models/getShareRideByPassengerModel.dart';
 import 'package:nebengdong/core/models/responseNoDataModel.dart';
 import 'package:nebengdong/utils/dio_interceptor.dart';
 import 'package:nebengdong/utils/shared_prefferences_helper.dart';
@@ -14,7 +15,7 @@ class PassengerService {
       if (statusCode == null) {
         return false;
       }
-      if (statusCode == 400) {
+      if (statusCode == 400 || statusCode == 404 || statusCode == 409) {
         // your http status code
         return true;
       } else {
@@ -28,12 +29,12 @@ class PassengerService {
     dio.interceptors.add(DioLogingIntercepotrs());
   }
 
-  Future findDriver() async {
+  Future findDriver(double lat, double long) async {
     var token = await SharedPrefs.getToken();
     try {
       var data = {
-        "destinationCoordinate": {"lat": 80.0, "long": -80.00},
-        "distance": 10.1,
+        "destinationCoordinate": {"lat": lat, "long": long},
+        "distance": 5.1,
         "costPerKm": 1000
       };
 
@@ -49,13 +50,32 @@ class PassengerService {
       );
       print(response.statusCode);
       print(response.data);
-      if (response.statusCode == 200) {
-        // ignore: avoid_print
-        print("Get Driver Success");
-        return compute(responseNoDataModelFromJson, json.encode(response.data));
-      }
+      print("Get Driver Success");
+      return compute(responseNoDataModelFromJson, json.encode(response.data));
     } on DioError catch (e) {
       print("Error Get Driver : Status Code = ${e.response!.data}");
+    }
+  }
+
+  Future getStatusShareDrive() async {
+    var token = await SharedPrefs.getToken();
+    try {
+      final response = await dio.get(
+        UriApi.passangerShareRideApi,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer $token"
+          },
+        ),
+      );
+      print(response.statusCode);
+      print(response.data);
+      print("Get Status Driver Success");
+      return compute(
+          getShareRideByPassengerModelFromJson, json.encode(response.data));
+    } on DioError catch (e) {
+      print("Error Get Status Driver : Status Code = ${e.response!.data}");
     }
   }
 }

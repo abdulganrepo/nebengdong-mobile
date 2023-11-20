@@ -172,8 +172,8 @@ class Passenger {
 }
 
 class DestinationCoordinate {
-  int? latitude;
-  int? longitude;
+  double? latitude;
+  double? longitude;
 
   DestinationCoordinate({
     this.latitude,
