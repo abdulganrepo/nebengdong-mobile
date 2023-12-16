@@ -95,19 +95,18 @@ class Driver {
   String? name;
   String? email;
   String? phoneNumber;
+  Vehicle? vehicle;
 
-  Driver({
-    this.id,
-    this.name,
-    this.email,
-    this.phoneNumber,
-  });
+  Driver({this.id, this.name, this.email, this.phoneNumber, this.vehicle});
 
   factory Driver.fromJson(Map<String, dynamic> json) => Driver(
         id: json["id"],
         name: json["name"],
         email: json["email"],
         phoneNumber: json["phoneNumber"],
+        vehicle: json['vehicle'] != null
+            ? new Vehicle.fromJson(json['vehicle'])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -115,7 +114,37 @@ class Driver {
         "name": name,
         "email": email,
         "phoneNumber": phoneNumber,
+        "vehicle": vehicle,
       };
+}
+
+class Vehicle {
+  int? id;
+  String? model;
+  String? licensePlate;
+  String? manufacture;
+  bool? inUse;
+
+  Vehicle(
+      {this.id, this.model, this.licensePlate, this.manufacture, this.inUse});
+
+  Vehicle.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    model = json['model'];
+    licensePlate = json['licensePlate'];
+    manufacture = json['manufacture'];
+    inUse = json['inUse'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['model'] = this.model;
+    data['licensePlate'] = this.licensePlate;
+    data['manufacture'] = this.manufacture;
+    data['inUse'] = this.inUse;
+    return data;
+  }
 }
 
 class Passenger {

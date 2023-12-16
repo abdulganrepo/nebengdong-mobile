@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:nebengdong/core/models/registerModel.dart';
 
 class RegisterState extends Equatable {
   @override
@@ -12,7 +13,7 @@ class RegisterLoading extends RegisterState {}
 class RegisterDisposeLoading extends RegisterState {}
 
 class RegisterSuccess extends RegisterState {
-  final value;
+  final RegisterModel value;
   RegisterSuccess(this.value);
 
   @override

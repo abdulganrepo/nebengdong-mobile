@@ -68,10 +68,11 @@ class _DriverScreenState extends State<DriverScreen> {
                 });
               }
             } else {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.value.message!)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Tidak ditemukan penebeng"!)));
               setState(() {
                 driverStatus = 0;
+                timer.cancel();
               });
             }
           }
@@ -581,10 +582,10 @@ class _DriverScreenState extends State<DriverScreen> {
                                             },
                                             child: Text(
                                               driverStatus == 3
-                                                  ? "Driver Di Lokasi Penebeng"
+                                                  ? "OTW Ke Kampus"
                                                   : driverStatus == 4
-                                                      ? "Penebeng Sudah Naik"
-                                                      : "Sudah Sampai Tujuan",
+                                                      ? "Sudah sampai di kampus"
+                                                      : "Penebeng Sudah Bayar",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: "Grostek",

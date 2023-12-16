@@ -29,13 +29,14 @@ class PassengerService {
     dio.interceptors.add(DioLogingIntercepotrs());
   }
 
-  Future findDriver(double lat, double long) async {
+  Future findDriver(
+      double lat, double long, double distance, int totalAmount) async {
     var token = await SharedPrefs.getToken();
     try {
       var data = {
         "destinationCoordinate": {"lat": lat, "long": long},
-        "distance": 5.1,
-        "costPerKm": 1000
+        "distance": distance,
+        "costPerKm": 10000
       };
 
       final response = await dio.post(

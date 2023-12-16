@@ -9,8 +9,10 @@ class PassengerEvent extends Equatable {
 class FindDriverEvent extends PassengerEvent {
   final double lat;
   final double long;
+  final double distance;
+  final int totalAmount;
 
-  FindDriverEvent(this.lat, this.long);
+  FindDriverEvent(this.lat, this.long, this.distance, this.totalAmount);
 
   @override
   // TODO: implement props

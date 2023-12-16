@@ -2,8 +2,7 @@ class UriApi {
   UriApi._();
 
   static const String BASE_AUTH_SERVER_URL = "";
-  static const String BASE_API_URL =
-      "https://0cfd-2001-448a-3043-432c-c5c1-e450-5148-8de7.ngrok-free.app";
+  static const String BASE_API_URL = "http://203.194.114.179:5000";
 
 //--------------------------------Register------------------------------------//
   static const String registerApi = "/nebengdong-service/v1/users/registration";

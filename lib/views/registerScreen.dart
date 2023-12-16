@@ -108,14 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   buttons: [
                     DialogButton(
                       onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => BlocProvider(
-                                create: (context) => LoginBloc(LoginService()),
-                                child: const LoginScreen(),
-                              ),
-                            ),
-                            (Route<dynamic> route) => false);
+                        Navigator.pop(context);
                       },
                       color: Colors.black,
                       child: const Text(
@@ -140,14 +133,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   buttons: [
                     DialogButton(
                       onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => BlocProvider(
-                                create: (context) => LoginBloc(LoginService()),
-                                child: const LoginScreen(),
-                              ),
-                            ),
-                            (Route<dynamic> route) => false);
+                        Navigator.pop(context);
+                      },
+                      color: Colors.black,
+                      child: const Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ),
+                  ]).show();
+            }
+            if (state.value.code == 409 &&
+                state.value.status == 'DUPLICATED_LICENSE_PLATE') {
+              Alert(
+                  context: context,
+                  type: AlertType.error,
+                  title: 'Plat Nomor Anda Telah Terdaftar',
+                  desc: "Mohon masuk menggunakan akun yang sudah terdaftar !",
+                  style: const AlertStyle(
+                    animationDuration: Duration(milliseconds: 500),
+                    overlayColor: Colors.black54,
+                    animationType: AnimationType.grow,
+                  ),
+                  buttons: [
+                    DialogButton(
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
                       color: Colors.black,
                       child: const Text(

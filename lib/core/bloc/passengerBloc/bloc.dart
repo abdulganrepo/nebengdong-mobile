@@ -14,8 +14,8 @@ class PassengerBloc extends Bloc<PassengerEvent, PassengerState> {
     if (event is FindDriverEvent) {
       yield PassengerLoading();
       try {
-        ResponseNoDataModel value =
-            await service.findDriver(event.lat, event.long);
+        ResponseNoDataModel value = await service.findDriver(
+            event.lat, event.long, event.distance, event.totalAmount);
         yield PassengerDisposeLoading();
         yield FindDriverSuccessState(value);
       } catch (e) {

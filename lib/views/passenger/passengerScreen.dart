@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -29,6 +30,8 @@ class _PassengerScreenState extends State<PassengerScreen> {
   double? distance = 0;
   int? totalAmount = 0;
   String? driverName;
+  String? manufacture;
+  String? licensePlate;
 
   @override
   void initState() {
@@ -59,6 +62,7 @@ class _PassengerScreenState extends State<PassengerScreen> {
                   .showSnackBar(SnackBar(content: Text(state.value.message!)));
               setState(() {
                 statusDriver = 0;
+                timer.cancel();
               });
             }
           }
@@ -72,6 +76,9 @@ class _PassengerScreenState extends State<PassengerScreen> {
                   distance = data.distance;
                   totalAmount = data.payment![0].totalAmount!;
                   driverName = state.value.data!.driver!.name;
+                  manufacture = state.value.data!.driver!.vehicle!.manufacture;
+                  licensePlate =
+                      state.value.data!.driver!.vehicle!.licensePlate;
                 });
               }
             }
@@ -196,7 +203,9 @@ class _PassengerScreenState extends State<PassengerScreen> {
                                   });
                                   _passengerBloc.add(FindDriverEvent(
                                       _currentPosition!.latitude,
-                                      _currentPosition!.longitude));
+                                      _currentPosition!.longitude,
+                                      distance!,
+                                      totalAmount!));
                                 },
                                 child: Text(
                                   "Cari Tebengan",
@@ -309,9 +318,7 @@ class _PassengerScreenState extends State<PassengerScreen> {
                               ],
                             ),
                           )
-                        : (statusDriver == 2 ||
-                                statusDriver == 3 ||
-                                statusDriver == 4)
+                        : (statusDriver == 2 || statusDriver == 3)
                             ? Container(
                                 padding: EdgeInsets.all(20),
                                 width: double.infinity,
@@ -393,7 +400,7 @@ class _PassengerScreenState extends State<PassengerScreen> {
                                               height: 5,
                                             ),
                                             Text(
-                                              "Nmax 550",
+                                              "${manufacture}",
                                               style: TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.bold,
@@ -404,7 +411,7 @@ class _PassengerScreenState extends State<PassengerScreen> {
                                               height: 5,
                                             ),
                                             Text(
-                                              "Z 3458 KW",
+                                              "${licensePlate}",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -430,9 +437,8 @@ class _PassengerScreenState extends State<PassengerScreen> {
                                     Text(
                                         statusDriver == 2
                                             ? "Driver OTW ke titik penjemputan"
-                                            : (statusDriver == 3 ||
-                                                    statusDriver == 4)
-                                                ? "Kamu sedang dalam perjalanan ke kampus"
+                                            : statusDriver == 3
+                                                ? "Kamu sedang perjalanan ke kampus"
                                                 : "",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -442,7 +448,7 @@ class _PassengerScreenState extends State<PassengerScreen> {
                                   ],
                                 ),
                               )
-                            : statusDriver == 5
+                            : statusDriver == 4
                                 ? Container(
                                     padding: EdgeInsets.all(20),
                                     width: double.infinity,
@@ -484,6 +490,76 @@ class _PassengerScreenState extends State<PassengerScreen> {
                                             ),
                                           ],
                                         ),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Container(
+                                                height: 60,
+                                                width: 60,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.black,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50)),
+                                                child: Icon(
+                                                  Icons.person,
+                                                  size: 40,
+                                                  color: Colors.white,
+                                                )),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  driverName!,
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: "Poppins",
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  "${manufacture}",
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: "Poppins",
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  "${licensePlate}",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: "Poppins",
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Icon(
+                                              FontAwesomeIcons.solidMessage,
+                                              size: 35,
+                                            )
+                                          ],
+                                        ),
                                         Spacer(),
                                         Container(
                                           padding: EdgeInsets.symmetric(
@@ -496,9 +572,13 @@ class _PassengerScreenState extends State<PassengerScreen> {
                                           width: 280,
                                           height: 54,
                                           child: InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              setState(() {
+                                                statusDriver = 0;
+                                              });
+                                            },
                                             child: Text(
-                                              "Bayar",
+                                              "Selesai",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: "Grostek",
@@ -558,6 +638,13 @@ class _PassengerScreenState extends State<PassengerScreen> {
     }).catchError((e) {
       debugPrint(e);
     });
+    print(
+        "Current Possition : ${_currentPosition!.latitude} ${_currentPosition!.longitude} ");
+    distance = calculateDistance(_currentPosition!.latitude,
+        _currentPosition!.longitude, -7.194657813082612, 107.88121117319012);
+    totalAmount = distance!.toInt() * 10000;
+    print("---- distance = ${distance} ----");
+    print(totalAmount);
   }
 
   Future<void> _getAddressFromLatLng(Position position) async {
@@ -569,8 +656,20 @@ class _PassengerScreenState extends State<PassengerScreen> {
         _currentAddress =
             '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
       });
+      print(_currentAddress);
     }).catchError((e) {
       debugPrint(e);
     });
+  }
+
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    var coor = double.parse((12742 * asin(sqrt(a))).toStringAsFixed(1));
+    print((12742 * asin(sqrt(a))).toStringAsFixed(1));
+    return coor;
   }
 }
